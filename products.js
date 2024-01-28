@@ -1,6 +1,7 @@
 console.clear();
 const { createApp, ref } = Vue;
 
+// 用來取cookies value的輔助函式
 var docCookies = {
     getItem: function (sKey) {
         return (
@@ -90,6 +91,7 @@ const app = {
         }
     },
     methods: {
+        // api functions
         checkLogin() {
             axios.post(`${this.api.url}/api/user/check`)
                 .then(res => {
@@ -104,7 +106,6 @@ const app = {
             axios.get(`${this.api.url}/api/${this.api.path}/admin/products/all`)
                 .then(res => {
                     this.products = res.data.products;
-                    console.log(this.products)
                 })
                 .catch(err => {
                     alert(`${err.data.message}\n將返回登入頁。`);
@@ -129,7 +130,6 @@ const app = {
             const data = {
                 data: this.productTemp
             }
-            console.log(`${this.api.url}/api/${this.api.path}/admin/product/${this.productTemp.id}`)
             axios.put(`${this.api.url}/api/${this.api.path}/admin/product/${this.productTemp.id}`, data)
                 .then(res => {
                     alert("修改成功。")
@@ -137,15 +137,14 @@ const app = {
                     this.handleModalDismiss();
                 })
                 .catch(err => {
-                    console.dir(err)
                     alert(`${err.data.message}`);
                 })
         },
         deleteProduct() {
             axios.delete(`${this.api.url}/api/${this.api.path}/admin/product/${this.deleteTemp.id}`)
                 .then(res => {
-                    this.getAllProducts();
                     alert("刪除成功。")
+                    this.getAllProducts();
                     this.handleModalDismiss();
                 })
                 .catch(err => {
@@ -153,47 +152,35 @@ const app = {
                 })
         },
 
-        // 關閉modal後重製兩種temp object
+        // 關閉 modal 後重製兩種 temp object
         handleModalDismiss() {
-            // 錯誤嘗試
-            // const productModal = new bootstrap.Modal(document.querySelector("#productModal"));
-            // const delProductModal = new bootstrap.Modal(document.querySelector("#delProductModal"));
-            // productModal.hide();
-            // delProductModal.hide();
-
+            // 若 指定 modal 存在，則將之關閉
             const productModal = bootstrap.Modal.getInstance(document.querySelector("#productModal"));
             productModal ? productModal.hide() : null;
             const delProductModal = bootstrap.Modal.getInstance(document.querySelector("#delProductModal"));
             delProductModal ? delProductModal.hide() : null;
 
-            // 這裡在處理 Modal 被隱藏時的邏輯
+            // 這裡在處理 modal 被隱藏時的邏輯
             this.productTemp = {};
             this.deleteTemp = {};
         },
-        // 開啟新增或編輯modal前，都先重置productTemp(two ways)
+        // 開啟新增或編輯 modal 前，都先重置 productTemp(two ways)
         initProductTemp() {
             this.productTemp = {};
         },
         editProductTemp(product) {
-            // this.productTemp = { ...product };
             this.productTemp = JSON.parse(JSON.stringify(product));
-
-            console.log(this.productTemp)
-
-
         },
-        // 開啟刪除modal前，都先重置deleteTemp
+        // 開啟刪除 modal 前，都先重置 deleteTemp
         initDeleteTemp(product) {
             this.deleteTemp = product;
 
-            // 目前無法focus在確認刪除的btn上
+            // 目前無法 focus 在 modal 的 確認刪除 的btn上
             const delConfirmBtn = document.querySelector(".del-btn");
-            console.log(delConfirmBtn);
             delConfirmBtn.focus();
         },
         // 送出 新增 或 編輯 的產品資料
         submitAddOrEditProduct() {
-            console.log(this.productTemp)
             if (this.productTemp.hasOwnProperty("id")) {
                 this.editProduct();
             } else {
@@ -218,15 +205,14 @@ const app = {
                 }
                 this.productTemp.smallImageTempUrl = "";
             }
-            console.log(1, this.productTemp.smallImageTempUrl, 2, this.productTemp.imagesUrl);
         },
         removeOneSmallImage(index) {
             this.productTemp.imagesUrl.splice(index, 1)
         },
         removeAllSmallImage() {
             this.productTemp.imagesUrl = [];
-            this.productTemp.smallImageTempUrl = '';
         }
+
     },
     mounted() {
         const token = docCookies.getItem("token");

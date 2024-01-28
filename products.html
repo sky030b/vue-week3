@@ -26,12 +26,12 @@
 					<table class="table table-hover mt-4">
 						<thead>
 							<tr>
-								<th width="120">分類</th>
-								<th width="120">產品名稱</th>
-								<th width="120">
+								<th width="160">產品名稱</th>
+								<th width="160">分類</th>
+								<th width="80">
 									原價
 								</th>
-								<th width="120">
+								<th width="80">
 									售價
 								</th>
 								<th width="100">
@@ -44,12 +44,12 @@
 						</thead>
 						<tbody>
 							<tr v-for="product in products" :key="product.title">
-								<td width="120">{{ product.category }}</th>
-								<td width="120">{{ product.title }}</td>
-								<td width="120">
+								<td width="160">{{ product.title }}</td>
+								<td width="160">{{ product.category }}</th>
+								<td width="80">
 									{{ product.origin_price }}
 								</td>
-								<td width="120">
+								<td width="80">
 									{{ product.price}}
 								</td>
 								<td width="100">
