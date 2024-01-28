@@ -173,11 +173,12 @@ const app = {
         },
         // 開啟刪除 modal 前，都先重置 deleteTemp
         initDeleteTemp(product) {
-            this.deleteTemp = product;
+            this.deleteTemp = { ...product };
 
-            // 目前無法 focus 在 modal 的 確認刪除 的btn上
             const delConfirmBtn = document.querySelector(".del-btn");
-            delConfirmBtn.focus();
+            setTimeout(() => {
+                delConfirmBtn.focus();
+            }, 500)
         },
         // 送出 新增 或 編輯 的產品資料
         submitAddOrEditProduct() {
