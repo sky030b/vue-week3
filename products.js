@@ -191,7 +191,7 @@ const app = {
 
         // 新增或編輯modal中所使用的function
         changeBigImage() {
-            this.productTemp.imageUrl = this.productTemp.imageTempUrl;
+            this.productTemp.imageTempUrl ? this.productTemp.imageUrl = this.productTemp.imageTempUrl : null;
             this.productTemp.imageTempUrl = "";
         },
         removeBigImage() {
